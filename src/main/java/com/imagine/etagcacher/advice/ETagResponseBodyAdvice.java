@@ -1,4 +1,4 @@
-package com.imagine.etagcacher.configuration;
+package com.imagine.etagcacher.advice;
 
 import com.imagine.etagcacher.annotation.ETagCacher;
 import com.imagine.etagcacher.annotation.EnableETagCacher;
@@ -50,9 +50,8 @@ public class ResponseBodyAdvice extends AbstractMappingJacksonResponseBodyAdvice
             }
 
             final String eTag = ETagGenerator.generateETag(bodyContainer.getValue(), eTagCacher.isWeakETag());
-            final String key = Objects.requireNonNull(returnType.getMethod()).getName();
 
-            this.eTagCache.put("TemporaryCacheName", key, eTag, eTagCacher.cacheExpiry());
+            this.eTagCache.put(request.getURI().getPath(), String.valueOf(returnType.getMethod().hashCode()), eTag, eTagCacher.expiry());
 
             response.getHeaders().add(HttpHeaders.ETAG, eTag);
         } catch (IOException e) {

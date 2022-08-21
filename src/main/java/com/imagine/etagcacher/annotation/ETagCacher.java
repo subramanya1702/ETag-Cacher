@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 public @interface ETagCacher {
 
     // Accept a parameter to specify the cache expiry time. Accept in minutes
-    int cacheExpiry() default 60;
+    int expiry() default 60;
 
     boolean isWeakETag() default true;
 }
