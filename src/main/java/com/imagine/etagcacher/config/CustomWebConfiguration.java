@@ -1,4 +1,4 @@
-package com.imagine.etagcacher.configuration;
+package com.imagine.etagcacher.config;
 
 import com.imagine.etagcacher.interceptor.ETagHandlerInterceptor;
 import org.springframework.context.annotation.Bean;

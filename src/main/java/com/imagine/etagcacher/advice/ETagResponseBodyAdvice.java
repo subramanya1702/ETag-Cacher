@@ -19,7 +19,7 @@ import java.lang.annotation.Annotation;
 import java.util.Objects;
 
 @ControllerAdvice(annotations = {EnableETagCacher.class})
-public class ResponseBodyAdvice extends AbstractMappingJacksonResponseBodyAdvice {
+public class ETagResponseBodyAdvice extends AbstractMappingJacksonResponseBodyAdvice {
 
     @Autowired
     private ETagCache eTagCache;
@@ -42,11 +42,15 @@ public class ResponseBodyAdvice extends AbstractMappingJacksonResponseBodyAdvice
             final Annotation[] annotations = Objects.requireNonNull(returnType.getMethod()).getAnnotations();
             ETagCacher eTagCacher = null;
 
-            for (Annotation annotation : annotations) {
+            for (final Annotation annotation : annotations) {
                 if (annotation.annotationType().getName().equals(ETagCacher.class.getName())) {
                     eTagCacher = (ETagCacher) annotation;
                     break;
                 }
+            }
+
+            if (eTagCacher == null) {
+                return;
             }
 
             final String eTag = ETagGenerator.generateETag(bodyContainer.getValue(), eTagCacher.isWeakETag());

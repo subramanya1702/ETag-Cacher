@@ -15,7 +15,7 @@ import java.io.ObjectOutputStream;
 public class ETagGenerator {
 
     public static String generateETag(final Object inputObject,
-                                      final boolean shouldConvertToWeakETag) throws IOException {
+                                      final boolean isWeakETag) throws IOException {
         final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         final ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
 
@@ -24,9 +24,8 @@ public class ETagGenerator {
         objectOutputStream.close();
 
         final InputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-
-        StringBuilder builder = new StringBuilder(33);
-        if (shouldConvertToWeakETag) {
+        StringBuilder builder = new StringBuilder(37);
+        if (isWeakETag) {
             builder.append("W/");
         }
         builder.append("\"0");
